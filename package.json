@@ -1,6 +1,6 @@
 {
   "name": "eco-bot",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Un bot telegram per la comunicazione della raccolta differenziata nei piccoli comuni",
   "main": "index.js",
   "scripts": {

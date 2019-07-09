@@ -34,30 +34,12 @@ bot.onText(/\/start/, (msg, match) => {
 
     bot.sendMessage(
         chatId,
-        `Ciao, sono EcoBot, ti posso dare informazioni sulla raccolta differenziata nel comune di ${municipalityData.Name}`,
+        `Ciao, sono EcoBot, ti posso dare informazioni sulla raccolta differenziata nel comune di ${municipalityData.Name}\n\nProva a scrivermi /domani per sapere che materiale verrà ritirato domani o /calendario per avere il calendario della raccolta per i prossimi sette giorni\n\n_Nota_: sono un bot *non* ufficiale e *non* collegato in alcun modo al comune di ${municipalityData.Name} o alla società che gestisce la raccolta differenziata\n\nAllora, che ti interessa sapere?`,
         { parse_mode: 'Markdown' }
-    );
-
-    bot.sendMessage(
-        chatId,
-        `Prova a scrivermi /domani per sapere che materiale verrà ritirato domani o /calendario per avere il calendario della raccolta per i prossimi sette giorni`,
-        { parse_mode: 'Markdown' }
-    );
-
-    bot.sendMessage(
-        chatId,
-        `_Nota_: sono un bot *non* ufficiale e *non* collegato in alcun modo al comune di ${municipalityData.Name} o alla società che gestisce la raccolta differenziata`,
-        { parse_mode: 'Markdown' }
-    );
-
-    bot.sendMessage(
-        chatId,
-        `Allora, che ti interessa sapere?`,
-        customKeyboard
     );
 });
 
-bot.onText(/\/domani/, (msg, match) => {
+bot.onText(/domani/i, (msg, match) => {
     const chatId = msg.chat.id;
 
     let calendar = municipalityData.Calendar;
@@ -73,18 +55,12 @@ bot.onText(/\/domani/, (msg, match) => {
 
     bot.sendMessage(
         chatId,
-        `${capitalize(dayName)} ${dayNumber} ${monthName} verrà ritirato\n*${materiali}*`,
+        `${capitalize(dayName)} ${dayNumber} ${monthName} verrà ritirato\n*${materiali}*\n\nRicordati di portare fuori i contenitori entro le 6 del mattino`,
         { parse_mode: 'Markdown' }
-    );
-
-    bot.sendMessage(
-        chatId,
-        `Ricordati di portare fuori i contenitori entro le 6 del mattino`,
-        customKeyboard
     );
 });
 
-bot.onText(/\/calendario/, (msg, match) => {
+bot.onText(/calendario/i, (msg, match) => {
     const chatId = msg.chat.id;
 
     let calendar = municipalityData.Calendar;
@@ -109,23 +85,10 @@ bot.onText(/.+/, (msg, match) => {
 
     bot.sendMessage(
         chatId,
-        `Non sono in grado di capire questo comando`,
+        `Non sono in grado di capire questo comando\n\nProva a scrivermi /domani per sapere che materiale verrà ritirato domani o /calendario per avere il calendario della raccolta per i prossimi sette giorni`,
         { parse_mode: 'Markdown' }
     );
-
-    bot.sendMessage(
-        chatId,
-        `Prova a scrivermi /domani per sapere che materiale verrà ritirato domani o /calendario per avere il calendario della raccolta per i prossimi sette giorni`,
-        customKeyboard
-    );
 });
-
-const customKeyboard = {
-    parse_mode: 'Markdown',
-    reply_markup: JSON.stringify({
-        keyboard: [['/domani'], ['/calendario'], ['/aiuto']]
-    })
-};
 
 
 const capitalize = (s) => {
