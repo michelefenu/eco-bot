@@ -1,0 +1,25 @@
+{
+  "name": "eco-bot",
+  "version": "0.1.0",
+  "description": "Un bot telegram per la comunicazione della raccolta differenziata nei piccoli comuni",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ermenauta/eco-bot.git"
+  },
+  "author": "Michele Fenu",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/ermenauta/eco-bot/issues"
+  },
+  "homepage": "https://github.com/ermenauta/eco-bot#readme",
+  "dependencies": {
+    "node-telegram-bot-api": "^0.30.0"
+  },
+  "devDependencies": {
+    "dotenv": "^8.0.0"
+  }
+}

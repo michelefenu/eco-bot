@@ -1,1 +1,1 @@
-# eco-bot
+# Eco Bot
