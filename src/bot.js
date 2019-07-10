@@ -4,6 +4,7 @@ const TelegramBotClient = require('node-telegram-bot-api');
 const dotenv = require('dotenv');
 const https = require("https");
 const moment = require('moment');
+const tz = require('moment-timezone');
 
 dotenv.config({ silent: true });
 
@@ -44,13 +45,13 @@ bot.onText(/domani/i, (msg, match) => {
 
     let calendar = municipalityData.Calendar;
 
-    let currentTime = moment().locale('it');
-    currentTime = currentTime.add(1, 'd').subtract(6, 'h');
+    let currentTime = moment().tz("Europe/Rome").locale('it');
+    currentTime = currentTime.add(18, 'h');
 
     let materiali = calendar[currentTime.format('YYYY')][currentTime.format('MM')][currentTime.format('DD')];
 
     let dayName = currentTime.format('dddd');
-    let dayNumber = currentTime.format('DD');
+    let dayNumber = currentTime.format('D');
     let monthName = currentTime.format('MMMM');
 
     bot.sendMessage(
@@ -65,11 +66,11 @@ bot.onText(/calendario/i, (msg, match) => {
 
     let calendar = municipalityData.Calendar;
 
-    let currentTime = moment().locale('it');
+    let currentTime = moment().tz("Europe/Rome").locale('it');
 
     let message = "";
     for (let i = 0; i < 7; i++) {
-        message += currentTime.format('DD') + " " + currentTime.format('MMMM') + ": *" + (calendar[currentTime.format('YYYY')][currentTime.format('MM')][currentTime.format('DD')] || "-") + "*\n";
+        message += currentTime.format('D') + " " + currentTime.format('MMMM') + ": *" + (calendar[currentTime.format('YYYY')][currentTime.format('MM')][currentTime.format('DD')] || "-") + "*\n";
         currentTime = currentTime.add(1, 'd')
     }
 
@@ -89,7 +90,6 @@ bot.onText(/.+/, (msg, match) => {
         { parse_mode: 'Markdown' }
     );
 });
-
 
 const capitalize = (s) => {
     if (typeof s !== 'string') return ''
