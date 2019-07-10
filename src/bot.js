@@ -76,8 +76,8 @@ bot.onText(/calendario/i, (msg, match) => {
 
     let message = "";
     for (let i = 0; i < 7; i++) {
-        let materiali = (calendar[currentTime.format('YYYY')][currentTime.format('MM')][currentTime.format('DD')] || "Nessun ritiro").replace('|','\n');
-        message += currentTime.format('D') + " " + currentTime.format('MMMM') + "\n *" + materiali + "*\n";
+        let materiali = (calendar[currentTime.format('YYYY')][currentTime.format('MM')][currentTime.format('DD')] || "Nessun ritiro");
+        message += currentTime.format('D') + " " + currentTime.format('MMMM') + ": *" + materiali + "*\n";
         currentTime = currentTime.add(1, 'd')
     }
 
