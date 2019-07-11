@@ -1,32 +1,96 @@
 //module service.js
 
 const https = require("https");
+const moment = require('moment');
+const tz = require('moment-timezone');
 
-const getMunicipalityData = function(municipalityCode) {
-    
-    let url = "";
-    if(process.env.NODE_ENV !== 'Development')
-        url = `https://firebasestorage.googleapis.com/v0/b/eco-bot-data.appspot.com/o/${municipalityCode}.json?alt=media`;
-    else
-        url = `https://firebasestorage.googleapis.com/v0/b/eco-bot-data.appspot.com/o/${municipalityCode}-dev.json?alt=media`;
-  
-    return new Promise(resolve => {
-        https.get(url, res => {
-            res.setEncoding("utf8");
+let cityData = "";
+let url = "";
 
-            let body = "";
+if (process.env.NODE_ENV !== 'Development')
+    url = `https://firebasestorage.googleapis.com/v0/b/eco-bot-data.appspot.com/o/${process.env.CITY_CODE}.json?alt=media`;
+else
+    url = `https://firebasestorage.googleapis.com/v0/b/eco-bot-data.appspot.com/o/${process.env.CITY_CODE}-dev.json?alt=media`;
 
-            res.on("data", data => {
-                body += data;
-            });
+https.get(url, res => {
+    res.setEncoding("utf8");
 
-            res.on("end", () => {
-                resolve(JSON.parse(body));
-            });
-        });
-    })
+    let body = "";
+
+    res.on("data", data => {
+        body += data;
+    });
+
+    res.on("end", () => {
+        cityData = JSON.parse(body);
+    });
+});
+
+const getCityName = function () {
+    return cityData.Name;
+}
+
+const getCityCode = function () {
+    return cityData.Name;
+}
+
+const getTomorrowSchedule = function () {
+    return getScheduleForDayOffset();
+}
+
+const getWarnings = function() {
+    return cityData.Warnings;
+}
+
+/**
+ * Returns the material that will be collected aftert 6AM on the day offset specified day as a parameter
+ * 
+ * 0 = tomorrow, 1 = tomorrow + 1 day, 2 = tomorrow + 3 days...
+ * 
+ * Default: tomorrow
+ */
+const getScheduleForDayOffset = function (offset) {
+    offset = offset || 0;
+
+    let calendar = cityData.Calendar;
+
+    let currentTime = moment().tz("Europe/Rome").locale('it');
+    // We add 18 hours rather than 24 for tomorrow because the "day" starts at 6AM 
+    currentTime.add(18, 'h').add(offset, 'd');
+
+    let dayInfo = calendar[currentTime.format('YYYY')][currentTime.format('MM')][currentTime.format('DD')];
+
+    return dayInfo;
+}
+
+/**
+ * Returns the collection calendar for the next n days
+ * 
+ * Default: 7 days
+ */
+const getCalendar = function (offset) {
+    offset = offset || 7;
+
+    let currentTime = moment().tz("Europe/Rome").locale('it');
+
+    let calendarInfo = [];
+    for (let i = 0; i < offset; i++) {
+        calendarInfo.push(getScheduleForDayOffset(i));
+        currentTime.add(1, 'd');
+    }
+
+    return calendarInfo;
+}
+
+const getCityData = function () {
+    return cityData;
 }
 
 module.exports = {
-    getMunicipalityData: getMunicipalityData
+    getCityName,
+    getCityCode,
+    getCityData,
+    getTomorrowSchedule,
+    getCalendar,
+    getWarnings
 }
