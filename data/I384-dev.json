@@ -1,0 +1,35 @@
+{
+    "Name": "San Vero Milis",
+    "Code": "I384",
+    "Calendar": {
+        "2019": {
+            "07": {
+                "07": {"materials": [""]},
+                "08": {"materials": ["Umido"]},
+                "09": {"materials": ["Secco"]},
+                "10": {"materials": ["Umido", "Vetro Marina"]},
+                "11": {"materials": ["Plastica"]},
+                "12": {"materials": ["Carta"]},
+                "13": {"materials": ["Umido","Vetro Paese"]},
+                "14": {"materials": [""]},
+                "15": {"materials": ["Umido"]},
+                "16": {"materials": ["Secco"]},
+                "17": {"materials": ["Umido", "Vetro Marina"]},
+                "18": {"materials": ["Plastica"]},
+                "19": {"materials": ["Carta"]},
+                "20": {"materials": ["Umido","Vetro Paese"]},
+                "21": {"materials": [""]},
+                "22": {"materials": ["Umido"]},
+                "23": {"materials": ["Secco"]},
+                "24": {"materials": ["Umido", "Vetro Marina"]},
+                "25": {"materials": ["Plastica"]},
+                "26": {"materials": ["Carta"]},
+                "27": {"materials": ["Umido","Vetro Paese"]},
+                "28": {"materials": [""]},
+                "29": {"materials": ["Umido"]},
+                "30": {"materials": ["Secco"]},
+                "31": {"materials": ["Umido", "Vetro Marina"]}
+            }
+        }
+    }
+}
