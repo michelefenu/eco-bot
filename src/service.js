@@ -7,10 +7,12 @@ const tz = require('moment-timezone');
 let cityData = "";
 let url = "";
 
-if (process.env.NODE_ENV !== 'Development')
-    url = `https://firebasestorage.googleapis.com/v0/b/eco-bot-data.appspot.com/o/${process.env.CITY_CODE}.json?alt=media`;
-else
+if (process.env.NODE_ENV === 'Development')
     url = `https://firebasestorage.googleapis.com/v0/b/eco-bot-data.appspot.com/o/${process.env.CITY_CODE}-dev.json?alt=media`;
+else if(process.env.NODE_ENV === 'Integration')
+    url = `https://firebasestorage.googleapis.com/v0/b/eco-bot-data.appspot.com/o/${process.env.CITY_CODE}-int.json?alt=media`;
+else
+    url = `https://firebasestorage.googleapis.com/v0/b/eco-bot-data.appspot.com/o/${process.env.CITY_CODE}.json?alt=media`;
 
 https.get(url, res => {
     res.setEncoding("utf8");
