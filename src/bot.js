@@ -27,7 +27,7 @@ bot.onText(/\/start/, (msg, match) => {
 });
 
 bot.onText(/domani/i, (msg, match) => {
-    
+
     let materials = service.getTomorrowSchedule().materials.join(', ') || 'Nessun ritiro previsto';
 
     let currentTime = moment().tz("Europe/Rome").locale('it');
@@ -55,7 +55,7 @@ bot.onText(/calendario/i, (msg, match) => {
 
     let message = ``;
     for (let i = 0; i < calendar.length; i++) {
-        message += `${currentTime.add(1, 'd').format('D MMMM')}: *${calendar[i].materials.join(', ')  || 'Nessun ritiro'}*\n`
+        message += `${currentTime.add(1, 'd').format('D MMMM')}: *${calendar[i].materials.join(', ') || 'Nessun ritiro'}*\n`
     }
 
     const chatId = msg.chat.id;
@@ -86,6 +86,40 @@ bot.onText(/grazie|ti ringrazio/i, (msg, match) => {
         chatId,
         `È sempre un piacere! 😉`,
         { parse_mode: 'Markdown' }
+    );
+});
+
+bot.onText(/ecocentro/i, (msg, match) => {
+    const ecocentro = service.getEcocentro();
+
+    let message = "";
+
+    if (ecocentro)
+        message = `\n\n*ORARI*\n\n${ecocentro.openingHours}\n\n*INDIRIZZO*\n${ecocentro.address}\n${ecocentro.googleMaps}`;
+
+    const chatId = msg.chat.id;
+
+    bot.sendMessage(
+        chatId,
+        message,
+        { parse_mode: 'Markdown' }
+    );
+});
+
+bot.onText(/ingombranti/i, (msg, match) => {
+    const ingombranti = service.getIngombranti();
+
+    let message = "";
+
+    if (ingombranti)
+        message = `${ingombranti.description}`;
+
+    const chatId = msg.chat.id;
+
+    bot.sendMessage(
+        chatId,
+        message,
+        { parse_mode: 'Markdown', disable_web_page_preview: true }
     );
 });
 

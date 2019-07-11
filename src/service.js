@@ -14,7 +14,6 @@ else if(process.env.NODE_ENV === 'Integration')
 else
     url = `https://firebasestorage.googleapis.com/v0/b/eco-bot-data.appspot.com/o/${process.env.CITY_CODE}.json?alt=media`;
 
-    console.log(url)
 https.get(url, res => {
     res.setEncoding("utf8");
 
@@ -26,7 +25,6 @@ https.get(url, res => {
 
     res.on("end", () => {
         cityData = JSON.parse(body);
-        console.log(cityData)
     });
 });
 
@@ -38,12 +36,16 @@ const getCityCode = function () {
     return cityData.Name;
 }
 
-const getTomorrowSchedule = function () {
-    return getScheduleForDayOffset();
+const getEcocentro = function() {
+    return cityData.Ecocentro;
 }
 
-const getWarnings = function() {
-    return cityData.Warnings;
+const getIngombranti = function() {
+    return cityData.Ingombranti;
+}
+
+const getTomorrowSchedule = function () {
+    return getScheduleForDayOffset();
 }
 
 /**
@@ -94,7 +96,8 @@ module.exports = {
     getCityName,
     getCityCode,
     getCityData,
+    getEcocentro,
+    getIngombranti,
     getTomorrowSchedule,
-    getCalendar,
-    getWarnings
+    getCalendar
 }

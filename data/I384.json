@@ -7,29 +7,37 @@
                 "07": {"materials": [""]},
                 "08": {"materials": ["Umido"]},
                 "09": {"materials": ["Secco"]},
-                "10": {"materials": ["Umido", "Vetro Marina"]},
+                "10": {"materials": ["Umido", "Vetro e alluminio Marina"]},
                 "11": {"materials": ["Plastica"]},
-                "12": {"materials": ["Carta"]},
-                "13": {"materials": ["Umido","Vetro Paese"]},
+                "12": {"materials": ["Carta e cartone"]},
+                "13": {"materials": ["Umido","Vetro e alluminio Paese"]},
                 "14": {"materials": [""]},
                 "15": {"materials": ["Umido"]},
                 "16": {"materials": ["Secco"]},
-                "17": {"materials": ["Umido", "Vetro Marina"]},
+                "17": {"materials": ["Umido", "Vetro e alluminio Marina"]},
                 "18": {"materials": ["Plastica"]},
-                "19": {"materials": ["Carta"]},
-                "20": {"materials": ["Umido","Vetro Paese"]},
+                "19": {"materials": ["Carta e cartone"]},
+                "20": {"materials": ["Umido","Vetro e alluminio Paese"]},
                 "21": {"materials": [""]},
                 "22": {"materials": ["Umido"]},
                 "23": {"materials": ["Secco"]},
-                "24": {"materials": ["Umido", "Vetro Marina"]},
+                "24": {"materials": ["Umido", "Vetro e alluminio Marina"]},
                 "25": {"materials": ["Plastica"]},
-                "26": {"materials": ["Carta"]},
-                "27": {"materials": ["Umido","Vetro Paese"]},
+                "26": {"materials": ["Carta e cartone"]},
+                "27": {"materials": ["Umido","Vetro e alluminio Paese"]},
                 "28": {"materials": [""]},
                 "29": {"materials": ["Umido"]},
                 "30": {"materials": ["Secco"]},
-                "31": {"materials": ["Umido", "Vetro Marina"]}
+                "31": {"materials": ["Umido", "Vetro e alluminio Marina"]}
             }
         }
+    },
+    "Ecocentro": {
+        "openingHours":"*Da giugno a settembre*\nLunedì-Mercoledì-Sabato\ndalle 09:00 alle 12:00\nVenerdì\ndalle 16:00 alle 19:00\n\n*Da ottobre a maggio*\nLunedì-Mercoledì-Sabato\ndalle 09:00 alle 12:00\nVenerdì\ndalle 14:30 alle 17:30",
+        "address":"Località Su Pardu",
+        "googleMaps":"https://goo.gl/maps/MBd64fCF7ewTRCVF8"
+    },
+    "Ingombranti": {
+        "description":"Puoi richiedere la raccolta a domicilio per i rifiuti ingombranti scrivendo una mail a [ingombranti@cosir.org] o via web su [ingombranti.cosir.org]. In alternativa puoi chiamare i numeri _800 069960_ o _070 684415_.\n\nIl servizio è attivo lunedì, mercoledì e sabato dalle 09:00 alle 13:00 e martedì, giovedì e sabato dalle 09:00 alle 14:00."
     }
 }
