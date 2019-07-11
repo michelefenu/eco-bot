@@ -28,14 +28,22 @@ bot.onText(/domani/i, (msg, match) => {
 
     let materials = service.getTomorrowSchedule().materials.join(', ') || 'Nessun ritiro previsto';
 
-    let currentTime = moment().tz("Europe/Rome").locale('it');
-    currentTime = currentTime.add(18, 'h');
+    let currentTime = moment().tz("Europe/Rome").locale('it').add(18, 'h');
 
     let dayName = currentTime.format('dddd');
     let dayNumber = currentTime.format('D');
     let monthName = currentTime.format('MMMM');
 
-    let message = `${utils.capitalize(dayName)} ${dayNumber} ${monthName} verrà ritirato\n*${materials}*\n\n👉 Ricordati di portare fuori i contenitori entro le 6 del mattino`;
+    let message = `${utils.capitalize(dayName)} ${dayNumber} ${monthName} verrà ritirato\n*${materials}*\n\n👉 `;
+
+    let currentHour = Number(moment().tz("Europe/Rome").locale('it').format('HH'));
+
+    message += "Ricordati di portare fuori i contenitori ";
+    if(currentHour >= 6 && currentHour <= 23)
+        message += "questa sera dopo le 20:00 ed entro le 6 del mattino di domani"
+    else {
+        message +=  "entro le 6 del mattino"
+    }
 
     const chatId = msg.chat.id;
 
@@ -60,7 +68,7 @@ bot.onText(/calendario/i, (msg, match) => {
 
     bot.sendMessage(
         chatId,
-        `Ecco il calendario per i prossimi 7 giorni\n\n${message}\n👉 Ricordati di portare fuori i contenitori entro le 6 del mattino del giorno di ritiro`,
+        `Ecco il calendario per i prossimi 7 giorni\n\n${message}\n👉 Ricordati di portare fuori i contenitori entro le 6 del mattino del giorno di ritiro o la sera prima dopo le 20:00`,
         { parse_mode: 'Markdown' }
     );
 });
