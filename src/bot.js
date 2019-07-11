@@ -1,34 +1,26 @@
 //module bot.js
 
 const TelegramBotClient = require('node-telegram-bot-api');
-const dotenv = require('dotenv');
-const https = require("https");
+const service = require('./service');
 const moment = require('moment');
 const tz = require('moment-timezone');
-
-dotenv.config({ silent: true });
-
-const url = `https://firebasestorage.googleapis.com/v0/b/eco-bot-data.appspot.com/o/${process.env.CODICE_COMUNE}.json?alt=media`;
+const utils = require('./utils');
 
 let municipalityData = "";
 
-https.get(url, res => {
-    res.setEncoding("utf8");
-    let body = "";
-    res.on("data", data => {
-        body += data;
-    });
-    res.on("end", () => {
-        municipalityData = JSON.parse(body);
-    });
-});
+async function getMunicipalityData() {
+    municipalityData = await service.getMunicipalityData(process.env.CODICE_COMUNE);
+}
+
+getMunicipalityData();
 
 const bot = new TelegramBotClient(
     process.env.BOT_TOKEN,
     {
         polling: true,
         onlyFirstMatch: true,
-    });
+    }
+);
 
 bot.onText(/\/start/, (msg, match) => {
     const chatId = msg.chat.id;
@@ -56,7 +48,7 @@ bot.onText(/domani/i, (msg, match) => {
 
     let message = "";
     if(materiali)
-        message = `${capitalize(dayName)} ${dayNumber} ${monthName} verrà ritirato\n*${materiali}*\n\n👉 Ricordati di portare fuori i contenitori entro le 6 del mattino`;
+        message = `${utils.capitalize(dayName)} ${dayNumber} ${monthName} verrà ritirato\n*${materiali}*\n\n👉 Ricordati di portare fuori i contenitori entro le 6 del mattino`;
     else
         message = `*Nessun ritiro previsto*`;
         
@@ -95,7 +87,7 @@ bot.onText(/ciao|buongiorno|salve|buonasera|buon giorno|buona sera/i, (msg, matc
 
     bot.sendMessage(
         chatId,
-        `${capitalize(saluto)} a te! 🙂\n\nProva a scrivermi /domani per sapere che materiale verrà ritirato domani o /calendario per avere il calendario della raccolta per i prossimi sette giorni`,
+        `${utils.capitalize(saluto)} a te! 🙂\n\nProva a scrivermi /domani per sapere che materiale verrà ritirato domani o /calendario per avere il calendario della raccolta per i prossimi sette giorni`,
         { parse_mode: 'Markdown' }
     );
 });
@@ -120,7 +112,6 @@ bot.onText(/.+/, (msg, match) => {
     );
 });
 
-const capitalize = (s) => {
-    if (typeof s !== 'string') return ''
-    return s.charAt(0).toUpperCase() + s.slice(1)
-}
+bot.on("polling_error", (err,match) => {
+    console.log(err);
+});
