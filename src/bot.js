@@ -17,11 +17,9 @@ const bot = new TelegramBotClient(
 bot.onText(/\/start/, (msg, match) => {
     const chatId = msg.chat.id;
 
-    let cityData = service.getCityData();
-
     bot.sendMessage(
         chatId,
-        `Ciao, sono EcoBot 👋\n\nTi posso dare informazioni sulla raccolta differenziata nel comune di *${cityData.Name}*\n\nProva a scrivere /domani per sapere che materiale verrà ritirato domani o /calendario per avere il calendario della raccolta per i prossimi sette giorni\n\nSono un bot *non* ufficiale e *non* collegato in alcun modo al comune di ${cityData.Name} o alla società che gestisce la raccolta differenziata, che non possono essere ritenuti responsabili per i contenuti delle nostre conversazioni\n\nAllora, che ti interessa sapere?`,
+        `Ciao, sono EcoBot 👋\n\nTi posso dare informazioni sulla raccolta differenziata nel comune di *${service.getCityName()}*\n\nProva a scrivere /domani per sapere che materiale verrà ritirato domani o /calendario per avere il calendario della raccolta per i prossimi sette giorni. Per la lista completa dei comandi scrivi /help\n\nSono un bot *non* ufficiale e *non* collegato in alcun modo al comune di ${service.getCityName()} o alla società che gestisce la raccolta differenziata, che non possono essere ritenuti responsabili per i contenuti delle nostre conversazioni\n\nAllora, che ti interessa sapere?`,
         { parse_mode: 'Markdown' }
     );
 });
@@ -120,6 +118,30 @@ bot.onText(/ingombranti/i, (msg, match) => {
         chatId,
         message,
         { parse_mode: 'Markdown', disable_web_page_preview: true }
+    );
+});
+
+bot.onText(/help|aiuto/i, (msg, match) => {
+
+    let message = `
+Puoi chiedermi qualcosa usando i seguenti comandi:
+
+*Raccolta*
+/domani - scopri cosa verrà ritirato domani mattina
+/calendario - il calendario dei ritiri per i prossimi 7 giorni
+
+*Altre Informazioni*
+/ecocentro - ottieni informazioni sull'ecocentro comunale
+/ingombranti - come conferire rifiuti ingombranti
+/help - visualizza questa guida
+`;
+
+    const chatId = msg.chat.id;
+
+    bot.sendMessage(
+        chatId,
+        message,
+        { parse_mode: 'Markdown' }
     );
 });
 
