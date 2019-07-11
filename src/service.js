@@ -25,6 +25,7 @@ https.get(url, res => {
 
     res.on("end", () => {
         cityData = JSON.parse(body);
+        console.log(cityData)
     });
 });
 
