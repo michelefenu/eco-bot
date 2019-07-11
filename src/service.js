@@ -14,6 +14,7 @@ else if(process.env.NODE_ENV === 'Integration')
 else
     url = `https://firebasestorage.googleapis.com/v0/b/eco-bot-data.appspot.com/o/${process.env.CITY_CODE}.json?alt=media`;
 
+    console.log(url)
 https.get(url, res => {
     res.setEncoding("utf8");
 
