@@ -9,7 +9,7 @@ let url = "";
 
 if (process.env.NODE_ENV === 'Development')
     url = `https://firebasestorage.googleapis.com/v0/b/eco-bot-data.appspot.com/o/${process.env.CITY_CODE}-dev.json?alt=media`;
-else if(process.env.NODE_ENV === 'Integration')
+else if (process.env.NODE_ENV === 'Integration')
     url = `https://firebasestorage.googleapis.com/v0/b/eco-bot-data.appspot.com/o/${process.env.CITY_CODE}-int.json?alt=media`;
 else
     url = `https://firebasestorage.googleapis.com/v0/b/eco-bot-data.appspot.com/o/${process.env.CITY_CODE}.json?alt=media`;
@@ -36,11 +36,11 @@ const getCityCode = function () {
     return cityData.Name;
 }
 
-const getEcocentro = function() {
+const getEcocentro = function () {
     return cityData.Ecocentro;
 }
 
-const getIngombranti = function() {
+const getIngombranti = function () {
     return cityData.Ingombranti;
 }
 
@@ -50,9 +50,9 @@ const getTomorrowSchedule = function () {
 
 /**
  * Returns the material that will be collected aftert 6AM on the day offset specified day as a parameter
- * 
+ *
  * 0 = tomorrow, 1 = tomorrow + 1 day, 2 = tomorrow + 3 days...
- * 
+ *
  * Default: tomorrow
  */
 const getScheduleForDayOffset = function (offset) {
@@ -61,7 +61,7 @@ const getScheduleForDayOffset = function (offset) {
     let calendar = cityData.Calendar;
 
     let currentTime = moment().tz("Europe/Rome").locale('it');
-    // We add 18 hours rather than 24 for tomorrow because the "day" starts at 6AM 
+    // We add 18 hours rather than 24 for tomorrow because the "day" starts at 6AM
     currentTime.add(18, 'h').add(offset, 'd');
 
     let dayInfo = calendar[currentTime.format('YYYY')][currentTime.format('MM')][currentTime.format('DD')];
@@ -71,7 +71,7 @@ const getScheduleForDayOffset = function (offset) {
 
 /**
  * Returns the collection calendar for the next n days
- * 
+ *
  * Default: 7 days
  */
 const getCalendar = function (offset) {
