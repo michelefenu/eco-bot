@@ -44,6 +44,10 @@ const getIngombranti = function () {
     return cityData.Ingombranti;
 }
 
+const getSpeciali = function () {
+    return cityData.Speciali;
+}
+
 const getTomorrowSchedule = function () {
     return getScheduleForDayOffset();
 }
@@ -98,6 +102,7 @@ module.exports = {
     getCityData,
     getEcocentro,
     getIngombranti,
+    getSpeciali,
     getTomorrowSchedule,
     getCalendar
 }

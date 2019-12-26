@@ -229,5 +229,8 @@
     },
     "Ingombranti": {
         "description":"Puoi richiedere la raccolta a domicilio per i rifiuti ingombranti scrivendo una mail a [ingombranti@cosir.org] o via web su [ingombranti.cosir.org]. In alternativa puoi chiamare i numeri _800 069960_ o _070 684415_.\n\nIl servizio è attivo lunedì, mercoledì e sabato dalle 09:00 alle 13:00 e martedì, giovedì e sabato dalle 09:00 alle 14:00.\n\nSarà possibile conferire fino a 5 rifiuti ingombranti per volta."
+    },
+    "Speciali": {
+        "description":"I contenitori per i rifiuti pericolosi sono collocati presso l'ecocentro o in prossimità delle farmacia e di molte attività commerciali.\n\nSono considerati rifiuti pericolosi le batterie, i farmaci e alcuni beni etichettati T e/o F, come ad esempio alcune bombolette spray.\n\n👉 Ricorda che non è consentito smaltire questi rifiuti assieme ad altre tipologie ma solo utilizzando i contenitori dedicati."
     }
 }

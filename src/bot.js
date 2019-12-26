@@ -54,8 +54,14 @@ bot.onText(/domani/i, (msg, match) => {
     );
 });
 
-bot.onText(/calendario/i, (msg, match) => {
-    let calendar = service.getCalendar();
+bot.onText(/calendario(\s\d+)*/i, (msg, match) => {
+    let numberOfDays = match[1];
+
+    if(numberOfDays < 2 || numberOfDays > 14) {
+        numberOfDays = 7;
+    }
+
+    let calendar = service.getCalendar(numberOfDays);
 
     let currentTime = moment().tz("Europe/Rome").locale('it');
 
@@ -68,7 +74,7 @@ bot.onText(/calendario/i, (msg, match) => {
 
     bot.sendMessage(
         chatId,
-        `Ecco il calendario per i prossimi 7 giorni\n\n${message}\n👉 Ricordati di portare fuori i contenitori entro le 6 del mattino del giorno di ritiro o la sera prima dopo le 20:00`,
+        `Ecco il calendario per i prossimi ${numberOfDays} giorni\n\n${message}\n👉 Ricordati di portare fuori i contenitori entro le 6 del mattino del giorno di ritiro o la sera prima dopo le 20:00`,
         { parse_mode: 'Markdown' }
     );
 });
@@ -119,6 +125,23 @@ bot.onText(/ingombranti/i, (msg, match) => {
 
     if (ingombranti)
         message = `${ingombranti.description}`;
+
+    const chatId = msg.chat.id;
+
+    bot.sendMessage(
+        chatId,
+        message,
+        { parse_mode: 'Markdown', disable_web_page_preview: true }
+    );
+});
+
+bot.onText(/farmaci|medicine|medicinali|batteri(e|a)/i, (msg, match) => {
+    const speciali = service.getSpeciali();
+
+    let message = "";
+
+    if (speciali)
+        message = `${speciali.description}`;
 
     const chatId = msg.chat.id;
 
