@@ -59,7 +59,7 @@ bot.onText(/domani/i, (msg, match) => {
 bot.onText(/calendario(\s\d+)*/i, (msg, match) => {
     let numberOfDays = match[1];
 
-    if(numberOfDays < 2 || numberOfDays > 14) {
+    if(!numberOfDays || numberOfDays < 2 || numberOfDays > 14) {
         numberOfDays = 7;
     }
 
