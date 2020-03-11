@@ -34,15 +34,17 @@ bot.onText(/domani/i, (msg, match) => {
     let dayNumber = currentTime.format('D');
     let monthName = currentTime.format('MMMM');
 
+    let collectionInfo = service.getCollectionInfo();
+
     let message = `${utils.capitalize(dayName)} ${dayNumber} ${monthName} verrà ritirato\n*${materials}*\n\n👉 `;
 
     let currentHour = Number(moment().tz("Europe/Rome").locale('it').format('HH'));
 
     message += "Ricordati di portare fuori i contenitori ";
-    if(currentHour >= 6 && currentHour <= 23)
-        message += "questa sera dopo le 20:00 ed entro le 6 del mattino di domani"
+    if(currentHour >= collectionInfo.collectionStartHourOfTheDay && currentHour <= 23)
+        message += "questa sera dopo le " + collectionInfo.collectionStartHourOfTheDay + " ed entro le " + collectionInfo.allowTakeOutTrashFromHour + " del mattino di domani"
     else {
-        message +=  "entro le 6 del mattino"
+        message +=  "entro le " + collectionInfo.collectionStartHourOfTheDay + " del mattino"
     }
 
     const chatId = msg.chat.id;
@@ -63,6 +65,8 @@ bot.onText(/calendario(\s\d+)*/i, (msg, match) => {
 
     let calendar = service.getCalendar(numberOfDays);
 
+    let collectionInfo = service.getCollectionInfo();
+
     let currentTime = moment().tz("Europe/Rome").locale('it');
 
     let message = ``;
@@ -74,7 +78,7 @@ bot.onText(/calendario(\s\d+)*/i, (msg, match) => {
 
     bot.sendMessage(
         chatId,
-        `Ecco il calendario per i prossimi ${numberOfDays} giorni\n\n${message}\n👉 Ricordati di portare fuori i contenitori entro le 6 del mattino del giorno di ritiro o la sera prima dopo le 20:00`,
+        `Ecco il calendario per i prossimi ${numberOfDays} giorni\n\n${message}\n👉 Ricordati di portare fuori i contenitori entro le ${collectionInfo.collectionStartHourOfTheDay} del mattino del giorno di ritiro o la sera prima dopo le ${collectionInfo.allowTakeOutTrashFromHour}`,
         { parse_mode: 'Markdown' }
     );
 });

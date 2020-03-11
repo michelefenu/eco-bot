@@ -36,6 +36,10 @@ const getCityCode = function () {
     return cityData.Name;
 }
 
+const getCollectionInfo = function() {
+    return cityData.CollectionInfo;
+}
+
 const getEcocentro = function () {
     return cityData.Ecocentro;
 }
@@ -100,6 +104,7 @@ module.exports = {
     getCityName,
     getCityCode,
     getCityData,
+    getCollectionInfo,
     getEcocentro,
     getIngombranti,
     getSpeciali,

@@ -222,6 +222,10 @@
             }
         }
     },
+    "CollectionInfo": {
+        "allowTakeOutTrashFromHour": 20,
+        "collectionStartHourOfTheDay": 6
+    },
     "Ecocentro": {
         "openingHours":"*Da giugno a settembre*\nLunedì-Mercoledì-Sabato\ndalle 09:00 alle 12:00\nVenerdì\ndalle 16:00 alle 19:00\n\n*Da ottobre a maggio*\nLunedì-Mercoledì-Sabato\ndalle 09:00 alle 12:00\nVenerdì\ndalle 14:30 alle 17:30",
         "address":"Località Su Pardu",
