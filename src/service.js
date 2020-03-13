@@ -109,5 +109,5 @@ module.exports = {
     getIngombranti,
     getSpeciali,
     getTomorrowSchedule,
-    getCalendar
+    getCalendar,
 }
