@@ -4,7 +4,7 @@
   "description": "Un bot telegram per la comunicazione della raccolta differenziata nei piccoli comuni",
   "main": "index.js",
   "scripts": {
-    "test": "jasmine",
+    "test": "istanbul cover -x **/*[sS]pec.js --include-all-sources jasmine",
     "start": "node index.js"
   },
   "repository": {
@@ -26,6 +26,7 @@
     "redis": "^2.8.0"
   },
   "devDependencies": {
+    "istanbul": "^0.4.5",
     "jasmine": "^3.5.0"
   },
   "engines": {

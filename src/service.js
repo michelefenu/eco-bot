@@ -7,36 +7,38 @@ const tz = require('moment-timezone');
 let cityData = "";
 let url = "";
 
-if (process.env.NODE_ENV === 'Development')
-    url = `https://firebasestorage.googleapis.com/v0/b/eco-bot-data.appspot.com/o/${process.env.CITY_CODE}-dev.json?alt=media`;
-else if (process.env.NODE_ENV === 'Integration')
-    url = `https://firebasestorage.googleapis.com/v0/b/eco-bot-data.appspot.com/o/${process.env.CITY_CODE}-int.json?alt=media`;
-else
-    url = `https://firebasestorage.googleapis.com/v0/b/eco-bot-data.appspot.com/o/${process.env.CITY_CODE}.json?alt=media`;
+const loadCityData = function () {
+    if (process.env.NODE_ENV === 'Development')
+        url = `https://firebasestorage.googleapis.com/v0/b/eco-bot-data.appspot.com/o/${process.env.CITY_CODE}-dev.json?alt=media`;
+    else if (process.env.NODE_ENV === 'Integration')
+        url = `https://firebasestorage.googleapis.com/v0/b/eco-bot-data.appspot.com/o/${process.env.CITY_CODE}-int.json?alt=media`;
+    else
+        url = `https://firebasestorage.googleapis.com/v0/b/eco-bot-data.appspot.com/o/${process.env.CITY_CODE}.json?alt=media`;
 
-https.get(url, res => {
-    res.setEncoding("utf8");
+    https.get(url, res => {
+        res.setEncoding("utf8");
 
-    let body = "";
+        let body = "";
 
-    res.on("data", data => {
-        body += data;
+        res.on("data", data => {
+            body += data;
+        });
+
+        res.on("end", () => {
+           setCityData(JSON.parse(body));
+        });
     });
-
-    res.on("end", () => {
-        cityData = JSON.parse(body);
-    });
-});
+}
 
 const getCityName = function () {
     return cityData.Name;
 }
 
 const getCityCode = function () {
-    return cityData.Name;
+    return cityData.Code;
 }
 
-const getCollectionInfo = function() {
+const getCollectionInfo = function () {
     return cityData.CollectionInfo;
 }
 
@@ -100,6 +102,10 @@ const getCityData = function () {
     return cityData;
 }
 
+const setCityData = function (_cityData) {
+    cityData = _cityData;
+};
+
 module.exports = {
     getCityName,
     getCityCode,
@@ -110,4 +116,6 @@ module.exports = {
     getSpeciali,
     getTomorrowSchedule,
     getCalendar,
+    loadCityData,
+    setCityData,
 }
