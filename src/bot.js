@@ -14,6 +14,8 @@ const bot = new TelegramBotClient(
     }
 );
 
+service.loadCityData();
+
 bot.onText(/\/start/, (msg, match) => {
     const chatId = msg.chat.id;
 
