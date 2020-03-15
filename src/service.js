@@ -8,24 +8,32 @@ let cityData = "";
 let url = "";
 
 const loadCityData = function () {
-    if (process.env.NODE_ENV === 'Development')
-        url = `https://firebasestorage.googleapis.com/v0/b/eco-bot-data.appspot.com/o/${process.env.CITY_CODE}-dev.json?alt=media`;
-    else if (process.env.NODE_ENV === 'Integration')
-        url = `https://firebasestorage.googleapis.com/v0/b/eco-bot-data.appspot.com/o/${process.env.CITY_CODE}-int.json?alt=media`;
-    else
-        url = `https://firebasestorage.googleapis.com/v0/b/eco-bot-data.appspot.com/o/${process.env.CITY_CODE}.json?alt=media`;
 
-    https.get(url, res => {
-        res.setEncoding("utf8");
+    return new Promise((resolve, reject) => {
+        if (process.env.NODE_ENV === 'Development')
+            url = `https://firebasestorage.googleapis.com/v0/b/eco-bot-data.appspot.com/o/${process.env.CITY_CODE}-dev.json?alt=media`;
+        else if (process.env.NODE_ENV === 'Integration')
+            url = `https://firebasestorage.googleapis.com/v0/b/eco-bot-data.appspot.com/o/${process.env.CITY_CODE}-int.json?alt=media`;
+        else
+            url = `https://firebasestorage.googleapis.com/v0/b/eco-bot-data.appspot.com/o/${process.env.CITY_CODE}.json?alt=media`;
 
-        let body = "";
+        https.get(url, res => {
+            res.setEncoding("utf8");
 
-        res.on("data", data => {
-            body += data;
-        });
+            let body = "";
 
-        res.on("end", () => {
-           setCityData(JSON.parse(body));
+            res.on("data", data => {
+                body += data;
+            });
+
+            res.on("end", () => {
+                cityData = JSON.parse(body);
+                resolve(cityData);
+            });
+
+            res.on("error", ()  => {
+                reject("Error reading stream");
+            })
         });
     });
 }
@@ -71,6 +79,7 @@ const getScheduleForDayOffset = function (offset) {
     let calendar = cityData.Calendar;
 
     let currentTime = moment().tz("Europe/Rome").locale('it');
+
     // We add 18 hours rather than 24 for tomorrow because the "day" starts at 6AM
     currentTime.add(18, 'h').add(offset, 'd');
 
@@ -102,10 +111,6 @@ const getCityData = function () {
     return cityData;
 }
 
-const setCityData = function (_cityData) {
-    cityData = _cityData;
-};
-
 module.exports = {
     getCityName,
     getCityCode,
@@ -117,5 +122,4 @@ module.exports = {
     getTomorrowSchedule,
     getCalendar,
     loadCityData,
-    setCityData,
 }
