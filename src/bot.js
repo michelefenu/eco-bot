@@ -43,10 +43,10 @@ bot.onText(/domani/i, (msg, match) => {
     let currentHour = Number(moment().tz("Europe/Rome").locale('it').format('HH'));
 
     message += "Ricordati di portare fuori i contenitori ";
-    if(currentHour >= collectionInfo.collectionStartHourOfTheDay && currentHour <= 23)
+    if (currentHour >= collectionInfo.collectionStartHourOfTheDay && currentHour <= 23)
         message += "questa sera dopo le " + collectionInfo.collectionStartHourOfTheDay + " ed entro le " + collectionInfo.allowTakeOutTrashFromHour + " del mattino di domani"
     else {
-        message +=  "entro le " + collectionInfo.collectionStartHourOfTheDay + " del mattino"
+        message += "entro le " + collectionInfo.collectionStartHourOfTheDay + " del mattino"
     }
 
     const chatId = msg.chat.id;
@@ -61,7 +61,7 @@ bot.onText(/domani/i, (msg, match) => {
 bot.onText(/calendario(\s*[a-zA-Z]*)*(\d+)*/i, (msg, match) => {
     let numberOfDays = match[2];
 
-    if(!numberOfDays || numberOfDays < 2 || numberOfDays > 14) {
+    if (!numberOfDays || numberOfDays < 2 || numberOfDays > 14) {
         numberOfDays = 7;
     }
 

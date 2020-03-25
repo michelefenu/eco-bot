@@ -31,7 +31,7 @@ const loadCityData = function () {
                 resolve(cityData);
             });
 
-            res.on("error", ()  => {
+            res.on("error", () => {
                 reject("Error reading stream");
             })
         });

@@ -8,8 +8,6 @@ describe("server.js: exported methods", () => {
         process.env.CITY_CODE = 'I384';
         process.env.NODE_ENV = 'Development';
 
-        spyOn(Date, 'now').and.returnValue(new Date("2020-02-29T23:00:00.000Z"));
-
         nock(`https://firebasestorage.googleapis.com`)
             .get(`/v0/b/eco-bot-data.appspot.com/o/${process.env.CITY_CODE}-dev.json?alt=media`)
             .reply(200, cityDataMock);
@@ -22,18 +20,55 @@ describe("server.js: exported methods", () => {
         delete process.env.NODE_ENV;
     });
 
-    it("should export getTomorrowSchedule", () => {
-        expect(service.getTomorrowSchedule).toBeTruthy();
-    });
-
-    it("should export getCalendar", () => {
-        expect(service.getCalendar).toBeTruthy();
-        service.getCalendar();
-    });
-
     describe('server.js - loadCityData', () => {
         it("should export loadCityData", () => {
             expect(service.loadCityData).toBeTruthy();
+        });
+    });
+
+    describe('server.js - getCalendar', () => {
+        it("should export getCalendar", () => {
+            expect(service.getCalendar).toBeTruthy();
+        });
+
+        it("should default to 7-days calendar", () => {
+            expect(service.getCalendar().length).toEqual(7);
+        });
+
+        it("should return the correct number of days", () => {
+            expect(service.getCalendar(12).length).toEqual(12);
+        });
+
+        it("should return the correct calendar", () => {
+            // March 26, 2020 - 16:00:00 GMT
+            spyOn(Date, 'now').and.returnValue(new Date("2020-03-25T16:00:00.000Z"));
+
+            const calendar = service.getCalendar();
+
+            const correctCalendar = [
+                cityDataMock.Calendar['2020']['03']["26"],
+                cityDataMock.Calendar['2020']['03']["27"],
+                cityDataMock.Calendar['2020']['03']["28"],
+                cityDataMock.Calendar['2020']['03']["29"],
+                cityDataMock.Calendar['2020']['03']["30"],
+                cityDataMock.Calendar['2020']['03']["31"],
+                cityDataMock.Calendar['2020']['04']["01"]
+            ]
+
+            expect(calendar).toEqual(correctCalendar);
+        });
+    });
+
+    describe('server.js - getTomorrowSchedule', () => {
+        it("should export getTomorrowSchedule", () => {
+            expect(service.getTomorrowSchedule).toBeTruthy();
+        });
+
+        it('should return correct schedule for tomorrow', () => {
+            // March 26, 2020 - 16:00:00 GMT
+            spyOn(Date, 'now').and.returnValue(new Date("2020-03-25T16:00:00.000Z"));
+
+            expect(service.getTomorrowSchedule()).toEqual(cityDataMock.Calendar['2020']['03']["26"]);
         });
     });
 
