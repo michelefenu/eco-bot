@@ -145,11 +145,3 @@ describe("server.js: exported methods", () => {
         });
     });
 });
-
-describe('server.js: initialization', () => {
-    it('should parse the mucipality data properly', () => {
-        // TODO
-    });
-});
-
-

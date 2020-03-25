@@ -30,10 +30,6 @@ const loadCityData = function () {
                 cityData = JSON.parse(body);
                 resolve(cityData);
             });
-
-            res.on("error", () => {
-                reject("Error reading stream");
-            })
         });
     });
 }
