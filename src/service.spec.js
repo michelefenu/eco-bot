@@ -8,7 +8,6 @@ describe("server.js: exported methods", () => {
         process.env.CITY_CODE = 'I384';
         process.env.NODE_ENV = 'Development';
 
-
         nock(`https://firebasestorage.googleapis.com`)
             .get(`/v0/b/eco-bot-data.appspot.com/o/${process.env.CITY_CODE}-dev.json?alt=media`)
             .reply(200, cityDataMock);
@@ -20,12 +19,6 @@ describe("server.js: exported methods", () => {
         delete process.env.CITY_CODE;
         delete process.env.NODE_ENV;
     });
-
-    it("should export getTomorrowSchedule", () => {
-        expect(service.getTomorrowSchedule).toBeTruthy();
-    });
-
-
 
     describe('server.js - loadCityData', () => {
         it("should export loadCityData", () => {
@@ -47,6 +40,7 @@ describe("server.js: exported methods", () => {
         });
 
         it("should return the correct calendar", () => {
+            // March 26, 2020 - 16:00:00 GMT
             spyOn(Date, 'now').and.returnValue(new Date("2020-03-25T16:00:00.000Z"));
 
             const calendar = service.getCalendar();
@@ -62,6 +56,19 @@ describe("server.js: exported methods", () => {
             ]
 
             expect(calendar).toEqual(correctCalendar);
+        });
+    });
+
+    describe('server.js - getTomorrowSchedule', () => {
+        it("should export getTomorrowSchedule", () => {
+            expect(service.getTomorrowSchedule).toBeTruthy();
+        });
+
+        it('should return correct schedule for tomorrow', () => {
+            // March 26, 2020 - 16:00:00 GMT
+            spyOn(Date, 'now').and.returnValue(new Date("2020-03-25T16:00:00.000Z"));
+
+            expect(service.getTomorrowSchedule()).toEqual(cityDataMock.Calendar['2020']['03']["26"]);
         });
     });
 
