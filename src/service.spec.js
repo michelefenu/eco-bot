@@ -27,6 +27,7 @@ describe("server.js: exported methods", () => {
     });
 
     describe('server.js - getCalendar', () => {
+        
         it("should export getCalendar", () => {
             expect(service.getCalendar).toBeTruthy();
         });
