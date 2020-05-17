@@ -28,32 +28,48 @@ bot.onText(/\/start/, (msg, match) => {
 
 bot.onText(/domani/i, (msg, match) => {
 
-    let materials = service.getTomorrowSchedule().materials.join(', ') || 'Nessun ritiro previsto';
+    const tomorrowSchedule = service.getTomorrowSchedule();
 
-    let currentTime = moment().tz("Europe/Rome").locale('it').add(18, 'h');
+    let message = ``;
+    let response = ``;
+    let failure = false;
 
-    let dayName = currentTime.format('dddd');
-    let dayNumber = currentTime.format('D');
-    let monthName = currentTime.format('MMMM');
-
-    let collectionInfo = service.getCollectionInfo();
-
-    let message = `${utils.capitalize(dayName)} ${dayNumber} ${monthName} verrà ritirato\n*${materials}*\n\n👉 `;
-
-    let currentHour = Number(moment().tz("Europe/Rome").locale('it').format('HH'));
-
-    message += "Ricordati di portare fuori i contenitori ";
-    if (currentHour >= collectionInfo.collectionStartHourOfTheDay && currentHour <= 23)
-        message += "questa sera dopo le " + collectionInfo.collectionStartHourOfTheDay + " ed entro le " + collectionInfo.allowTakeOutTrashFromHour + " del mattino di domani"
-    else {
-        message += "entro le " + collectionInfo.collectionStartHourOfTheDay + " del mattino"
+    if (tomorrowSchedule.error && tomorrowSchedule.error.message === 'NO_INFO_AVAILABLE_AFTER') {
+        failure = true;
+        response = `\nOh no! \nNon sono state ancora pubblicate le informazioni sulla raccolta dopo il *${moment(tomorrowSchedule.error.details).format('D MMMM')}* 🤷‍♂️\n`;
+    } else {
+        message = tomorrowSchedule.materials.join(', ') || 'Nessun ritiro previsto';
     }
 
+    if (!failure) {
+        let currentTime = moment().tz("Europe/Rome").locale('it').add(18, 'h');
+
+        let dayName = currentTime.format('dddd');
+        let dayNumber = currentTime.format('D');
+        let monthName = currentTime.format('MMMM');
+
+        let collectionInfo = service.getCollectionInfo();
+
+        response = `${utils.capitalize(dayName)} ${dayNumber} ${monthName} verrà ritirato\n*${message}*\n\n`;
+
+        let currentHour = Number(moment().tz("Europe/Rome").locale('it').format('HH'));
+
+        if (message !== 'Nessun ritiro previsto') {
+            response += "👉 Ricordati di portare fuori i contenitori ";
+            if (currentHour >= collectionInfo.collectionStartHourOfTheDay && currentHour <= 23)
+                response += "questa sera dopo le " + collectionInfo.collectionStartHourOfTheDay + " ed entro le " + collectionInfo.allowTakeOutTrashFromHour + " del mattino di domani"
+            else {
+                response += "entro le " + collectionInfo.collectionStartHourOfTheDay + " del mattino"
+            }
+        } else {
+            response += "👉 Puoi chiedermi cosa passerà nei prossimi giorni usando il comando /calendario ";
+        }
+    }
     const chatId = msg.chat.id;
 
     bot.sendMessage(
         chatId,
-        message,
+        response,
         { parse_mode: 'Markdown' }
     );
 });
@@ -61,7 +77,7 @@ bot.onText(/domani/i, (msg, match) => {
 bot.onText(/calendario(\s*[a-zA-Z]*)*(\d+)*/i, (msg, match) => {
     let numberOfDays = match[2];
 
-    if (!numberOfDays || numberOfDays < 2 || numberOfDays > 14) {
+    if (!numberOfDays || numberOfDays < 2 || numberOfDays > 34) {
         numberOfDays = 7;
     }
 
@@ -72,15 +88,31 @@ bot.onText(/calendario(\s*[a-zA-Z]*)*(\d+)*/i, (msg, match) => {
     let currentTime = moment().tz("Europe/Rome").locale('it');
 
     let message = ``;
+    let failure = false;
+
     for (let i = 0; i < calendar.length; i++) {
+        if (calendar[i].error && calendar[i].error.message === 'NO_INFO_AVAILABLE_AFTER') {
+            failure = i === 0;
+            message += `\nNon sono state ancora pubblicate le informazioni sulla raccolta dopo il *${moment(calendar[i].error.details).format('D MMMM')}* 🤷‍♂️\n`;
+            break;
+        }
+
         message += `${currentTime.add(1, 'd').format('D MMMM')}: *${calendar[i].materials.join(', ') || 'Nessun ritiro'}*\n`
     }
 
     const chatId = msg.chat.id;
 
+    let response;
+
+    if (!failure) {
+        response = `Ecco il calendario per i prossimi ${numberOfDays} giorni\n\n${message}\n👉 Ricordati di portare fuori i contenitori entro le ${collectionInfo.collectionStartHourOfTheDay} del mattino del giorno di ritiro o la sera prima dopo le ${collectionInfo.allowTakeOutTrashFromHour}`;
+    } else {
+        response = `Oh, no! ${message}`;
+    }
+
     bot.sendMessage(
         chatId,
-        `Ecco il calendario per i prossimi ${numberOfDays} giorni\n\n${message}\n👉 Ricordati di portare fuori i contenitori entro le ${collectionInfo.collectionStartHourOfTheDay} del mattino del giorno di ritiro o la sera prima dopo le ${collectionInfo.allowTakeOutTrashFromHour}`,
+        response,
         { parse_mode: 'Markdown' }
     );
 });
