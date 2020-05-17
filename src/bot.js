@@ -57,7 +57,7 @@ bot.onText(/domani/i, (msg, match) => {
         if (message !== 'Nessun ritiro previsto') {
             response += "👉 Ricordati di portare fuori i contenitori ";
             if (currentHour >= collectionInfo.collectionStartHourOfTheDay && currentHour <= 23)
-                response += "questa sera dopo le " + collectionInfo.collectionStartHourOfTheDay + " ed entro le " + collectionInfo.allowTakeOutTrashFromHour + " del mattino di domani"
+                response += "questa sera dopo le " + collectionInfo.allowTakeOutTrashFromHour + " ed entro le " + collectionInfo.collectionStartHourOfTheDay + " del mattino di domani"
             else {
                 response += "entro le " + collectionInfo.collectionStartHourOfTheDay + " del mattino"
             }
