@@ -79,9 +79,17 @@ const getScheduleForDayOffset = function (offset) {
     // We add 18 hours rather than 24 for tomorrow because the "day" starts at 6AM
     currentTime.add(18, 'h').add(offset, 'd');
 
-    let dayInfo = calendar[currentTime.format('YYYY')][currentTime.format('MM')][currentTime.format('DD')];
+    const dayInfo = getDayInfo(calendar, currentTime);
 
     return dayInfo;
+}
+
+const getDayInfo = function(calendar, currentTime) {
+    const yearInfo = calendar[currentTime.format('YYYY')];
+    const monthInfo = yearInfo && yearInfo[currentTime.format('MM')];
+    const dayInfo = monthInfo && monthInfo[currentTime.format('DD')];
+
+    return dayInfo || { error: {message: 'NO_INFO_AVAILABLE_AFTER', details: currentTime}};
 }
 
 /**
