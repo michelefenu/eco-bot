@@ -77,8 +77,10 @@ bot.onText(/domani/i, (msg, match) => {
 bot.onText(/calendario(\s*[a-zA-Z]*)*(\d+)*/i, (msg, match) => {
     let numberOfDays = match[2];
 
-    if (!numberOfDays || numberOfDays < 2 || numberOfDays > 34) {
+    if (!numberOfDays) {
         numberOfDays = 7;
+    } else if(numberOfDays > 14) {
+        numberOfDays = 14;
     }
 
     let calendar = service.getCalendar(numberOfDays);
