@@ -5,9 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "nyc jasmine",
-    "start": "node index.js",
-    "snyk-protect": "snyk protect",
-    "prepare": "npm run snyk-protect"
+    "start": "node index.js"
   },
   "repository": {
     "type": "git",
@@ -22,17 +20,15 @@
   "dependencies": {
     "dotenv": "^8.2.0",
     "memjs": "^1.2.2",
-    "moment": "^2.24.0",
-    "moment-timezone": "^0.5.28",
-    "node-telegram-bot-api": "^0.30.0",
-    "redis": "^2.8.0",
-    "snyk": "^1.321.0"
+    "moment": "^2.27.0",
+    "moment-timezone": "^0.5.31",
+    "node-telegram-bot-api": "^0.50.0"
   },
   "devDependencies": {
     "jasmine": "^3.5.0",
     "nock": "^12.0.3",
-    "nyc": "^15.0.0",
-    "rewiremock": "^3.13.9"
+    "nyc": "^15.1.0",
+    "rewiremock": "^3.14.3"
   },
   "engines": {
     "node": "10.16.0",
