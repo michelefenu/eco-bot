@@ -5,6 +5,7 @@ const service = require('./service');
 const moment = require('moment');
 const tz = require('moment-timezone');
 const utils = require('./utils');
+const logger = require('pino')();
 
 const bot = new TelegramBotClient(
     process.env.BOT_TOKEN,
@@ -27,6 +28,8 @@ bot.onText(/\/start/, (msg, match) => {
 });
 
 bot.onText(/domani/i, (msg, match) => {
+
+    logger.info(msg);
 
     const tomorrowSchedule = service.getTomorrowSchedule();
 
@@ -75,6 +78,9 @@ bot.onText(/domani/i, (msg, match) => {
 });
 
 bot.onText(/calendario(\s*[a-zA-Z]*)*(\d+)*/i, (msg, match) => {
+
+    logger.info(msg);
+
     let numberOfDays = match[2];
 
     if (!numberOfDays) {
@@ -120,6 +126,9 @@ bot.onText(/calendario(\s*[a-zA-Z]*)*(\d+)*/i, (msg, match) => {
 });
 
 bot.onText(/ciao|buongiorno|salve|buonasera|buon giorno|buona sera/i, (msg, match) => {
+
+    logger.info(msg);
+
     let saluto = match[0].replace(' ', '');
 
     const chatId = msg.chat.id;
@@ -132,6 +141,9 @@ bot.onText(/ciao|buongiorno|salve|buonasera|buon giorno|buona sera/i, (msg, matc
 });
 
 bot.onText(/grazie|ti ringrazio/i, (msg, match) => {
+
+    logger.info(msg);
+
     const chatId = msg.chat.id;
 
     bot.sendMessage(
@@ -142,6 +154,9 @@ bot.onText(/grazie|ti ringrazio/i, (msg, match) => {
 });
 
 bot.onText(/ecocentro/i, (msg, match) => {
+
+    logger.info(msg);
+
     const ecocentro = service.getEcocentro();
 
     let message = "";
@@ -159,6 +174,9 @@ bot.onText(/ecocentro/i, (msg, match) => {
 });
 
 bot.onText(/ingombranti/i, (msg, match) => {
+
+    logger.info(msg);
+
     const ingombranti = service.getIngombranti();
 
     let message = "";
@@ -176,6 +194,9 @@ bot.onText(/ingombranti/i, (msg, match) => {
 });
 
 bot.onText(/farmaci|medicine|medicinali|batteri(e|a)/i, (msg, match) => {
+
+    logger.info(msg);
+
     const speciali = service.getSpeciali();
 
     let message = "";
@@ -193,6 +214,8 @@ bot.onText(/farmaci|medicine|medicinali|batteri(e|a)/i, (msg, match) => {
 });
 
 bot.onText(/help|aiuto/i, (msg, match) => {
+
+    logger.info(msg);
 
     let message = `
 Puoi chiedermi qualcosa usando i seguenti comandi:
@@ -217,6 +240,9 @@ Puoi chiedermi qualcosa usando i seguenti comandi:
 });
 
 bot.onText(/.+/, (msg, match) => {
+ 
+    logger.info(msg);
+
     const chatId = msg.chat.id;
 
     bot.sendMessage(
