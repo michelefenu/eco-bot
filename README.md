@@ -5,7 +5,7 @@
 A minimal stateless telegram bot to consult the separate collection calendar in small municipalities
 
 <p align="center">
-![Bot preview](assets/bot-preview.gif)
+<img src="assets/bot-preview.gif" />
 </p>
 
 ### Active bots
