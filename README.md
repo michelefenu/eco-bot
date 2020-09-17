@@ -5,7 +5,7 @@
 Un bot telegram per la consultazione del calendario della raccolta differenziata nei piccoli comuni.
 
 ## Comandi
-Il bot può essere interrogato usando delle espressioni in italiano come `Cosa ritirano domani?` o `Qual è il calendario per i prossimi 12 giorni?`. Sono anche presenti dei comandi preimpostati per le operazioni comuni che possono essere usati direttamente cliccando sul bottone dei comandi nell'app di telegram.
+Il bot può essere interrogato usando espressioni in italiano come `Cosa ritirano domani?` o `Qual è il calendario per i prossimi 12 giorni?`, oppure utilizzando uno dei comandi del bot preimpostati.
 
 ### Raccolta
 `/domani` - scopri cosa verrà ritirato domani mattina
@@ -19,7 +19,8 @@ Il bot può essere interrogato usando delle espressioni in italiano come `Cosa r
 
 `/help` - visualizza questa guida
 
+### Anteprima
 ![Bot preview](assets/bot-preview.gif)
 
-### Bot attivi ora
-- [@SanVeroMilisEcoBot](https://web.telegram.org/#/im?p=@SanVeroMilisEcoBot) ([docs](https://michelefenu.github.io/eco-bot/))
+## Bot attivi ora
+- [@SanVeroMilisEcoBot](https://web.telegram.org/#/im?p=@SanVeroMilisEcoBot)
