@@ -1,7 +1,6 @@
+![Tests](https://github.com/michelefenu/eco-bot/workflows/Tests/badge.svg) ![CodeQL](https://github.com/michelefenu/eco-bot/workflows/CodeQL/badge.svg)
+
 # Eco Bot
-
-![Tests](https://github.com/michelefenu/eco-bot/workflows/Tests/badge.svg)
-
 Un bot telegram per la consultazione del calendario della raccolta differenziata nei piccoli comuni.
 
 ## Comandi
