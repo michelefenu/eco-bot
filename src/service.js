@@ -1,65 +1,60 @@
-//module service.js
+const https = require('https')
+const moment = require('moment')
+const tz = require('moment-timezone')
 
-const https = require("https");
-const moment = require('moment');
-const tz = require('moment-timezone');
-
-let cityData = "";
-let url = "";
+let cityData = ''
+let url = ''
 
 const loadCityData = function () {
-
     return new Promise((resolve, reject) => {
         if (process.env.NODE_ENV === 'Development')
-            url = `https://firebasestorage.googleapis.com/v0/b/eco-bot-data.appspot.com/o/${process.env.CITY_CODE}-dev.json?alt=media`;
+            url = `https://firebasestorage.googleapis.com/v0/b/eco-bot-data.appspot.com/o/${process.env.CITY_CODE}-dev.json?alt=media`
         else if (process.env.NODE_ENV === 'Integration')
-            url = `https://firebasestorage.googleapis.com/v0/b/eco-bot-data.appspot.com/o/${process.env.CITY_CODE}-int.json?alt=media`;
+            url = `https://firebasestorage.googleapis.com/v0/b/eco-bot-data.appspot.com/o/${process.env.CITY_CODE}-int.json?alt=media`
         else
-            url = `https://firebasestorage.googleapis.com/v0/b/eco-bot-data.appspot.com/o/${process.env.CITY_CODE}.json?alt=media`;
+            url = `https://firebasestorage.googleapis.com/v0/b/eco-bot-data.appspot.com/o/${process.env.CITY_CODE}.json?alt=media`
 
         https.get(url, res => {
-            res.setEncoding("utf8");
+            res.setEncoding('utf8')
 
-            let body = "";
+            let body = ''
 
-            res.on("data", data => {
-                body += data;
-            });
+            res.on('data', data => (body += data))
 
-            res.on("end", () => {
-                cityData = JSON.parse(body);
-                resolve(cityData);
-            });
-        });
-    });
+            res.on('end', () => {
+                cityData = JSON.parse(body)
+                resolve(cityData)
+            })
+        })
+    })
 }
 
 const getCityName = function () {
-    return cityData.Name;
+    return cityData.Name
 }
 
 const getCityCode = function () {
-    return cityData.Code;
+    return cityData.Code
 }
 
 const getCollectionInfo = function () {
-    return cityData.CollectionInfo;
+    return cityData.CollectionInfo
 }
 
 const getEcocentro = function () {
-    return cityData.Ecocentro;
+    return cityData.Ecocentro
 }
 
 const getIngombranti = function () {
-    return cityData.Ingombranti;
+    return cityData.Ingombranti
 }
 
 const getSpeciali = function () {
-    return cityData.Speciali;
+    return cityData.Speciali
 }
 
 const getTomorrowSchedule = function () {
-    return getScheduleForDayOffset();
+    return getScheduleForDayOffset()
 }
 
 /**
@@ -70,26 +65,32 @@ const getTomorrowSchedule = function () {
  * Default: tomorrow
  */
 const getScheduleForDayOffset = function (offset) {
-    offset = offset || 0;
+    offset = offset || 0
 
-    let calendar = cityData.Calendar;
+    let calendar = cityData.Calendar
 
-    let currentTime = moment().tz("Europe/Rome").locale('it');
+    let currentTime = moment()
+        .tz('Europe/Rome')
+        .locale('it')
 
     // We add 18 hours rather than 24 for tomorrow because the "day" starts at 6AM
-    currentTime.add(18, 'h').add(offset, 'd');
+    currentTime.add(18, 'h').add(offset, 'd')
 
-    const dayInfo = getDayInfo(calendar, currentTime);
+    const dayInfo = getDayInfo(calendar, currentTime)
 
-    return dayInfo;
+    return dayInfo
 }
 
-const getDayInfo = function(calendar, currentTime) {
-    const yearInfo = calendar[currentTime.format('YYYY')];
-    const monthInfo = yearInfo && yearInfo[currentTime.format('MM')];
-    const dayInfo = monthInfo && monthInfo[currentTime.format('DD')];
+const getDayInfo = function (calendar, currentTime) {
+    const yearInfo = calendar[currentTime.format('YYYY')]
+    const monthInfo = yearInfo && yearInfo[currentTime.format('MM')]
+    const dayInfo = monthInfo && monthInfo[currentTime.format('DD')]
 
-    return dayInfo || { error: {message: 'NO_INFO_AVAILABLE_AFTER', details: currentTime}};
+    return (
+        dayInfo || {
+            error: { message: 'NO_INFO_AVAILABLE_AFTER', details: currentTime }
+        }
+    )
 }
 
 /**
@@ -98,21 +99,23 @@ const getDayInfo = function(calendar, currentTime) {
  * Default: 7 days
  */
 const getCalendar = function (offset) {
-    offset = offset || 7;
+    offset = offset || 7
 
-    let currentTime = moment().tz("Europe/Rome").locale('it');
+    let currentTime = moment()
+        .tz('Europe/Rome')
+        .locale('it')
 
-    let calendarInfo = [];
+    let calendarInfo = []
     for (let i = 0; i < offset; i++) {
-        calendarInfo.push(getScheduleForDayOffset(i));
-        currentTime.add(1, 'd');
+        calendarInfo.push(getScheduleForDayOffset(i))
+        currentTime.add(1, 'd')
     }
 
-    return calendarInfo;
+    return calendarInfo
 }
 
 const getCityData = function () {
-    return cityData;
+    return cityData
 }
 
 module.exports = {
@@ -125,5 +128,5 @@ module.exports = {
     getSpeciali,
     getTomorrowSchedule,
     getCalendar,
-    loadCityData,
+    loadCityData
 }
