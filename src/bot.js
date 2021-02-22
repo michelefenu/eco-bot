@@ -90,7 +90,7 @@ bot.onText(/domani/i, (msg, match) => {
 bot.onText(/calendario(\s*[a-zA-Z]*)*(\d+)*/i, (msg, match) => {
     logger.info(msg)
 
-    const numberOfDays = match[2]
+    let numberOfDays = match[2]
 
     if (!numberOfDays) {
         numberOfDays = 7
