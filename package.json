@@ -19,14 +19,13 @@
   "homepage": "https://github.com/ermenauta/eco-bot#readme",
   "dependencies": {
     "dotenv": "^8.2.0",
-    "memjs": "^1.2.2",
-    "moment": "^2.27.0",
-    "moment-timezone": "^0.5.31",
+    "moment": "^2.29.1",
+    "moment-timezone": "^0.5.33",
     "node-telegram-bot-api": "^0.50.0",
-    "pino": "^6.4.1"
+    "pino": "^6.11.3"
   },
   "devDependencies": {
-    "jasmine": "^3.5.0",
+    "jasmine": "^3.7.0",
     "nock": "^12.0.3",
     "nyc": "^15.1.0",
     "rewiremock": "^3.14.3"
@@ -34,6 +33,5 @@
   "engines": {
     "node": "10.16.0",
     "npm": "6.9.0"
-  },
-  "snyk": true
+  }
 }
