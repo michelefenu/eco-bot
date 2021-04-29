@@ -94,8 +94,8 @@ bot.onText(/calendario(\s*[a-zA-Z]*)*(\d+)*/i, (msg, match) => {
 
     if (!numberOfDays) {
         numberOfDays = 7
-    } else if (numberOfDays > 14) {
-        numberOfDays = 14
+    } else if (numberOfDays > 31) {
+        numberOfDays = 31
     }
 
     const calendar = service.getCalendar(numberOfDays)
@@ -108,7 +108,7 @@ bot.onText(/calendario(\s*[a-zA-Z]*)*(\d+)*/i, (msg, match) => {
 
     let message = ``
     let failure = false
-
+    let previousMonth = '';
     for (let i = 0; i < calendar.length; i++) {
         if (
             calendar[i].error &&
@@ -117,11 +117,18 @@ bot.onText(/calendario(\s*[a-zA-Z]*)*(\d+)*/i, (msg, match) => {
             failure = i === 0
             message += `\nNon sono state ancora pubblicate le informazioni sulla raccolta dopo il *${moment(
                 calendar[i].error.details
-            ).format('D MMMM')}* 🤷‍♂️\n`
+            ).format('D MMMM yyyy')}* 🤷‍♂️\n`
             break
         }
 
-        message += `${currentTime.add(1, 'd').format('D MMMM')}: *${calendar[
+        currentTime.add(1, 'd');
+
+        if (previousMonth !== currentTime.format('MMMM')) {
+            previousMonth = currentTime.format('MMMM');
+            message += `*\n${utils.capitalize(previousMonth)}\n*`
+        }
+
+        message += `${utils.capitalize(currentTime.format('dddd D'))}: *${calendar[
             i
         ].materials.join(', ') || 'Nessun ritiro'}*\n`
     }
@@ -131,7 +138,7 @@ bot.onText(/calendario(\s*[a-zA-Z]*)*(\d+)*/i, (msg, match) => {
     let response
 
     if (!failure) {
-        response = `Ecco il calendario per i prossimi ${numberOfDays} giorni\n\n${message}\n👉 Ricordati di portare fuori i contenitori entro le ${collectionInfo.collectionStartHourOfTheDay} del mattino del giorno di ritiro o la sera prima dopo le ${collectionInfo.allowTakeOutTrashFromHour}`
+        response = `Ecco il calendario per i prossimi ${numberOfDays} giorni\n${message}\n👉 Ricordati di portare fuori i contenitori entro le ${collectionInfo.collectionStartHourOfTheDay} del mattino del giorno di ritiro o la sera prima dopo le ${collectionInfo.allowTakeOutTrashFromHour}`
     } else {
         response = `Oh, no! ${message}`
     }
